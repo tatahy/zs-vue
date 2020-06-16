@@ -34,8 +34,7 @@ appInit()
     //   render: h => h(App)
     // })
     // vmRoot.$mount('#app');
-    console.log(store.state);
-    
+       
     new Vue({
       store,
       render: h => h(App)

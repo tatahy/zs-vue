@@ -1,11 +1,12 @@
 <template>
   <div>
     <!-- <div class="layout-index"> -->
-    <i-header v-on:event-show-index="showAdmin" />
+    <i-header />
 
     <i-container class="container-xl" />
-    <!-- <i-container class="container-fluence" /> -->
-    <i-footer />
+    <!-- <i-container class="container-fluid" /> -->
+    <hr>
+    <i-footer class="container" />
   </div>
 </template>
 
@@ -18,9 +19,7 @@ import IHeader from "./components/index/IHeader.vue";
 export default {
   name: "LayoutIndex",
   methods: {
-    showAdmin() {
-      this.$emit("event-show-index", false);
-    }
+   
   },
   components: {
     IHeader,
@@ -31,4 +30,5 @@ export default {
 </script>
 
 <style>
+
 </style>

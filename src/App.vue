@@ -12,7 +12,7 @@
 import { mapState } from "vuex";
 
 import Index from "./LayoutIndex.vue";
-import Admin from "./LayoutAdmin.vue";
+// import Admin from "./LayoutAdmin.vue";
 
 export default {
   name: "App",
@@ -34,7 +34,7 @@ export default {
   },
   components: {
     Index,
-    Admin
+    Admin:()=>import("./LayoutAdmin.vue")
   }
 };
 </script>

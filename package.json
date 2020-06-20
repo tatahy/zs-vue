@@ -6,11 +6,13 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "copy-dist":".\\copy-dist"
+    "copy-dist": ".\\copy-dist"
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "mqtt": "^4.1.0",
     "vue": "^2.6.11",
+    "vue-router": "^3.3.4",
     "vuex": "^3.4.0"
   },
   "devDependencies": {

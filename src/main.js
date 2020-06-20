@@ -9,35 +9,35 @@
 
 // -------------------------
 
-//动态加载各个模块
+//动态加载各个模块,vue全家桶
 async function appInit() {
   const [
     { default: Vue },
+    { default: router },
     { default: store },
-    { default: App },
+    { default: Home },
   ] = await Promise.all([
     import('vue'),
+    import('@/routes/router'),
     import('@/store'),
-    import('@/App'),
+    import('@/Home'),
   ]);
 
-  return { Vue, App, store };
+  return { Vue,router, Home, store };
 
 }
 
 appInit()
   .then(obj => {
-    const [store, Vue, App] = [obj.store, obj.Vue, obj.App];
+    const [store, Vue, router,Home] = [obj.store, obj.Vue,obj.router,obj.Home];
+    
     Vue.config.productionTip = false;
-    // let vmRoot = new Vue({
-    //   store,
-    //   render: h => h(App)
-    // })
-    // vmRoot.$mount('#app');
        
     new Vue({
       store,
-      render: h => h(App)
+      router,
+      render: h => h(Home)
     }).$mount('#app');
+    
   })
   .catch(err => alert(err));

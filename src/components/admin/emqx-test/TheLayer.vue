@@ -16,9 +16,9 @@
   
     <hr>
 
-    <TheEmqxHttpApi v-show="'httpApi'===componentName"/>
+    <TheEmqxHttpApi class="mb-5" v-show="'httpApi'===componentName"/>
 
-    <TheMqttClient v-show="'mqttClient'===componentName"/>
+    <TheMqttClient class="mb-5" v-show="'mqttClient'===componentName"/>
  
   </div>
 </template>

@@ -2,6 +2,7 @@
 export default {
   //顶层路由
   path: '/admin',
+  name: "",
   component: () => import('@/components/admin/Layout.vue'),
   //二级路由
   children: [

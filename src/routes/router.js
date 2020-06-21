@@ -6,7 +6,7 @@ import init from '@/components/index/Layout.vue';
 import admin from '@/routes/admin';
 import index from '@/routes/index';
 
-//定义渲染函数生成的404页面
+//渲染函数生成的404页面
 const page404 = {
   render: function (createElement) {
     return createElement(
@@ -29,9 +29,11 @@ const routes = [
   //404页面
   {
     path: '*',
+    name:'',
     component: init,
     children: [{
       path: '',
+      name:'404page-content',
       components: {
         container: page404
       }

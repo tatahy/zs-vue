@@ -3,6 +3,7 @@
 export default {
   //顶层路由
   path: '/',
+  name:'',
   component: () => import('@/components/index/Layout.vue'),
   //二级路由
   children: [
@@ -15,6 +16,7 @@ export default {
     },
     {
       path: '',
+      name:'iRoot-1st',
       components: {
         container: () => import('@/components/index/IContainer.vue'),
       }

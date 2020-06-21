@@ -31,7 +31,7 @@
       </b-row>
       <br />
       <p class="text-center">
-        <b-button v-bind:variant="themeCls" v-on:click="getApiResult">Get API Info</b-button>
+        <b-button v-bind:variant="themeCls" v-on:click="getApiResult()">Get API Info</b-button>
       </p>
     </template>
 
@@ -119,7 +119,6 @@ async function asyFetchByRoute(url, opt = {}) {
 
   if (url && typeArr.includes(opt.type)) {
     res = await fetch(url, opt);
-    // console.log(res);
   }
 
   if (res.ok) {
@@ -220,10 +219,10 @@ export default {
     //设定要访问的后端url
     apiServUrl() {
       let host = this.host;
-      // let debug = process.env.NODE_ENV !== "production";
+      let debug = process.env.NODE_ENV !== "production";
       let routeStr= "/emqx/httpapi";
       
-      host.port = 10000;
+      debug?host.port = 20000:'';
       // console.log(host);
       return host.origin + routeStr;
       // return debug ? host.origin + "/emqx/httpapi" : "";
@@ -260,7 +259,9 @@ export default {
 
       if (url) {
         self.res = await asyFetchByRoute(url, opt);
-        //console.log('getApiResult(): ',self.res)
+        // console.log('getApiResult(): ');
+        // console.log(url);
+        // console.log(opt);
       }
 
       return;

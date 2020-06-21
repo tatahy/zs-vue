@@ -219,9 +219,10 @@ export default {
     //设定要访问的后端url
     apiServUrl() {
       let host = this.host;
-      let debug = process.env.NODE_ENV !== "production";
+      let debug = process.env.NODE_ENV === "development";
       let routeStr= "/emqx/httpapi";
-      
+      // console.log(process.env);
+      // console.log(debug);
       debug?host.port = 20000:'';
       // console.log(host);
       return host.origin + routeStr;

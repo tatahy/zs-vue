@@ -2,7 +2,10 @@
   <div id="app">
     <!-- route outlet -->
     <!-- component matched by the route will render here -->
-    <router-view></router-view>
+    <router-view name='header'></router-view>
+    <router-view name='body' class="container-fluid" ></router-view>
+    <router-view name='warning'></router-view>
+    <router-view name='footer'></router-view>
   </div>
 </template>
 
@@ -10,20 +13,6 @@
 
 export default {
   name: "Home",
-  //  computed: {
-  //   username() {
-  //     // We will see what `params` is shortly
-  //     return this.$route.params.username
-  //   }
-  // },
-  // methods: {
-  //   goBack() {
-  //     window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
-  //   }
-  // },
-  // created(){
-  //   console.log(this.$route);
-  // }
 };
 </script>
 

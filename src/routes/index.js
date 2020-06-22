@@ -1,26 +1,25 @@
-// import header from '@/components/index/IHeader.vue';
+import head from '@/components/index/IHeader.vue';
+import foot from '@/components/index/IFooter.vue';
+import body from '@/components/index/IContainer.vue';
 
 export default {
   //顶层路由
   path: '/',
-  name:'',
-  component: () => import('@/components/index/Layout.vue'),
+  name: '',
+  components:{
+    header:head,
+    body:body,
+    footer:foot
+  },
   //二级路由
   children: [
     {
       path: 'index',
       name: "index",
-      components: {
-        container: () => import('@/components/index/IContainer.vue'),
-      }
-    },
-    {
-      path: '',
-      name:'iRoot-1st',
-      components: {
-        container: () => import('@/components/index/IContainer.vue'),
-      }
+      // components: {
+      //   body: body,
+      //   footer:foot
+      // }
     }
-  ],
-
-};
+  ]
+}

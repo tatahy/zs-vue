@@ -17,14 +17,14 @@
             <b-nav-item-dropdown v-if="nav.type=='dropdown'" v-bind:text="nav.title">
               <div v-for="arr in nav.arr" v-bind:key="arr.text">
                 <b-dropdown-divider v-if="arr.type=='divider'"></b-dropdown-divider>
+
+                <router-link v-else-if="arr.type=='router-link'" class="dropdown-item" v-bind:to="{name:arr.name}">{{arr.text}}</router-link>
                 <b-dropdown-item v-else v-bind:href="arr.href">{{arr.text}}</b-dropdown-item>
               </div>
             </b-nav-item-dropdown>
             <!-- Navbar item -->
             <b-nav-item v-else >
-
-              <router-link v-bind:to="{name:'emqx-test'}" class="nav-color">{{nav.title}}</router-link>
-
+              <!-- <router-link v-bind:to="{name:nav.name}" class="nav-color">{{nav.title}}</router-link> -->
             </b-nav-item>
           </div>
         </b-navbar-nav>
@@ -32,7 +32,7 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <!-- <b-nav-item v-on:click="setShowPage('index')">显示主页</b-nav-item> -->
-          <router-link v-bind:to="{name:'index'}" class="nav-color">显示主页</router-link>
+          <router-link v-bind:to="{path:'/'}" class="nav-color">显示主页</router-link>
         </b-navbar-nav>
       </b-collapse>
       <!-- </div> -->
@@ -77,19 +77,18 @@ const navArr = [
     ]
   },
   {
-    title: "CCCC",
+    title: "Emqx",
     type: "dropdown",
     arr: [
-      { type: "item", href: "#", text: "c1" },
-      { type: "item", href: "#", text: "c2" },
-      { type: "item", href: "#", text: "c3" }
+      { type: "router-link", name: "http-api", text: "Http Api" },
+      { type: "router-link", name: "mqtt-client", text: "Mqtt Client" },
     ]
   },
-  {
-    title: "Emqx Test",
-    type: "none",
-    href: "#"
-  }
+  // {
+  //   title: "Emqx Test",
+  //   type: "router-link",
+  //   name: "emqx-test",
+  // }
 ];
 
 export default {

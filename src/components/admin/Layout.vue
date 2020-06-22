@@ -1,20 +1,16 @@
 <template>
   <div>
-    <a-header />
-    <router-view class="container-fluid" name="container"></router-view>
+      <router-view name="title"></router-view>
+      <router-view name="container" class="mb-5"></router-view>
   </div>
 </template>
 
 <script>
-import AHeader from "@/components/admin/AHeader.vue";
-// import AContainer from './components/admin/AContainer.vue'
+
 
 export default {
   name: "Layout",
-  methods: {},
-  components: {
-    AHeader,
-  }
+  
 };
 </script>
 

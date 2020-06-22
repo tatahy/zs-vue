@@ -1,25 +1,44 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import init from '@/components/index/Layout.vue';
-
 import admin from '@/routes/admin';
 import index from '@/routes/index';
+import logo from '@/components/Logo.vue';
 
-//渲染函数生成的404页面
-const page404 = {
-  render: function (createElement) {
-    return createElement(
-      'h3',
-      {
-        domProps: {
-          innerHTML: '页面不存在！'
+//渲染函数生成的404组件
+const page404 = (txt) => {
+  return {
+    render: (createElement) => {
+      // return async (createElement) => {
+      //   const h = createElement;
+      //   const l = await import('@/components/Logo.vue');
+      //   const lo = h(l.default);
+
+      //   console.log(lo);
+      //   console.log(h(logo));
+
+      const h = createElement;
+      const h3 = h(
+        'h3',
+        {
+          domProps: {
+            innerHTML: txt
+          },
         },
-        class:'text-center p-3'
-      }
-    )
-  }
+      );
+      const alert = h('div',
+        {
+          class: 'm-5 alert alert-warning'
+        },
+        [h3]
+      );
+
+      return h('div', { class: 'text-center' }, [h(logo),alert]);
+      // return h('div', { class: 'text-center' }, [h(lo), alert]);
+    }
+  };
 };
+
 //全局使用vue-router
 Vue.use(VueRouter);
 
@@ -29,21 +48,20 @@ const routes = [
   //404页面
   {
     path: '*',
-    name:'',
-    component: init,
-    children: [{
-      path: '',
-      name:'404page-content',
-      components: {
-        container: page404
-      }
-    }]
+    name: '404page-content',
+    components: {
+      header: () => import('@/components/index/IHeader.vue'),
+      warning: page404('页面不存在！'),
+      body: '',
+      // body: () => import('@/components/Logo.vue'),
+      footer: () => import('@/components/index/IFooter.vue')
+    }
   },
 ];
 
 const router = new VueRouter({
   // mode: "history",
-  mode:"hash",
+  mode: "hash",
   routes
 });
 

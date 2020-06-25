@@ -1,51 +1,28 @@
 <template>
   <div id="app">
-    <!-- <Index v-if="isIndexShown" v-on:event-show-index="showPage" />
-    <Admin v-else v-on:event-show-index="showPage" />-->
-
-    <Index v-if="showIndex" />
-    <Admin v-if="showAdmin" />
+    <!-- route outlet -->
+    <!-- component matched by the route will render here -->
+    <router-view name='header'></router-view>
+    <router-view name='body' class="container-fluid" ></router-view>
+    <router-view name='warning'></router-view>
+    <router-view name='footer'></router-view>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
-
-import Index from "./LayoutIndex.vue";
-// import Admin from "./LayoutAdmin.vue";
 
 export default {
-  name: "App",
-  data() {
-    return {
-      isIndexShown: true
-    };
-  },
-  computed: {
-    ...mapState({
-      showIndex: state => state.showPage.index,
-      showAdmin: state => state.showPage.admin
-    })
-  },
-  methods: {
-    showPage(evt) {
-      this.isIndexShown = evt;
-    }
-  },
-  components: {
-    Index,
-    Admin:()=>import("./LayoutAdmin.vue")
-  }
+  name: "Home",
 };
 </script>
 
 <style lang='scss'>
-//引入bootstrap4样式文件
+//引入bootstrap4样式文件全局使用
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
-//引入bsv样式文件
+//引入bsv样式文件全局使用
 @import "~bootstrap-vue/dist/bootstrap-vue.min.css";
 
-//引入个人定制的bootstrap4样式文件
+//引入个人定制的bootstrap4样式文件全局使用
 // @import '~@/scss/custom.scss';
 </style>

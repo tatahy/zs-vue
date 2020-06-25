@@ -2,21 +2,23 @@ import head from '@/components/admin/AHeader.vue';
 import logo from '@/components/Logo.vue';
 
 //渲染函数生成的组件
-const titleCom = (txt,tag='h1') => {
+const headerCom = (opt) => {
+  const optdefault={text:'error',tag:'h1',class:'my-2 text-center'};
+  opt=Object.assign({},optdefault,opt);
+  
   return {
     render: (createElement) => {
       const h = createElement;
       const h1 = h(
-        tag,
+        opt.tag,
         {
           domProps: {
-            innerHTML: txt
+            innerHTML: opt.text
           },
-          class: 'my-2 text-center'
+          class: opt.class
         },
       );
       return h1;
-      // return h('div', { class: 'text-center' }, [h(lo), alert]);
     }
   };
 };
@@ -44,7 +46,7 @@ export default {
       path: 'emqx/httpapi',
       name: "http-api",
       components: {
-        title:titleCom('"EmqX Http-API Test"') ,
+        title:headerCom({text:'"EmqX Http-API Test"'}) ,
         container: () => import('@/components/admin/emqx-test/TheEmqxHttpApi.vue'),
       }
     },
@@ -52,8 +54,16 @@ export default {
       path: 'emqx/mqtt-client',
       name: "mqtt-client",
       components: {
-        title: titleCom('"EmqX Mqtt-Client Test"'),
+        title: headerCom({text:'"EmqX Mqtt-Client Test"'}),
         container: () => import('@/components/admin/emqx-test/TheMqttClient.vue'),
+      }
+    },
+    {
+      path: 'terminal',
+      name: "terminal-data",
+      components: {
+        title:headerCom({text:'"显示终端数据"'}),
+        container: () => import('@/components/admin/terminal-data/DataTable.vue'),
       }
     }
   ],

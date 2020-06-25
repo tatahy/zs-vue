@@ -1,12 +1,16 @@
 <template>
   <div>
+    <!-- controls
+    indicators 
+    background="#ababab"
+    -->
     <b-carousel
       id="carousel-1"
       v-model="slide"
       :interval="4000"
-      controls
-      indicators
-      background="#ababab"
+      no-animation
+      indicators 
+      background="transparent"
       img-width="1024"
       img-height="480"
       style="text-shadow: 1px 1px 2px #333;"
@@ -14,16 +18,17 @@
       @sliding-end="onSlideEnd"
     >
        <!-- Slides with img slot -->
-      <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-      <b-carousel-slide content-visible-up="md" caption="电磁泵">
+      <!-- the classes .d-block and .img-fluid to prevent browser default image alignment -->
+      <b-carousel-slide content-visible-up="md" caption="电磁泵" >
         <template v-slot:img>
+          <div class="d-flex justify-content-center">
           <img
-            class="d-block img-fluid w-100"
-            width="1024"
-            height="480"
+            class="d-block img-fluid"
+            width="1024"            
             src="@/assets/lmtd.jpg"
             alt="image slot"
           />
+          </div>
         </template>
       </b-carousel-slide>
 
@@ -31,13 +36,14 @@
         text="电磁泵低压铸造机"
       >
         <template v-slot:img>
+          <div class="d-flex justify-content-center">
           <img
-            class="d-block img-fluid w-100"
+            class="d-block img-fluid"
             width="1024"
-            height="480"
             src="@/assets/casting-machine.jpg"
             alt="image slot"
           />
+          </div>
         </template>
       </b-carousel-slide>
 
@@ -52,7 +58,7 @@
         caption="Blank Image"
         img-blank
         img-alt="Blank image"
-        img-src="@/assets/casting-machine.jpg"
+        background="#ababab"
       >
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eros felis, tincidunt

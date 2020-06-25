@@ -24,7 +24,7 @@
             </b-nav-item-dropdown>
             <!-- Navbar item -->
             <b-nav-item v-else >
-              <!-- <router-link v-bind:to="{name:nav.name}" class="nav-color">{{nav.title}}</router-link> -->
+              <router-link v-bind:to="{name:nav.name}" class="nav-color">{{nav.title}}</router-link>
             </b-nav-item>
           </div>
         </b-navbar-nav>
@@ -84,11 +84,11 @@ const navArr = [
       { type: "router-link", name: "mqtt-client", text: "Mqtt Client" },
     ]
   },
-  // {
-  //   title: "Emqx Test",
-  //   type: "router-link",
-  //   name: "emqx-test",
-  // }
+  {
+    title: "终端数据",
+    type: "router-link",
+    name: "terminal-data",
+  }
 ];
 
 export default {

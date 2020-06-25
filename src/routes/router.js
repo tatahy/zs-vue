@@ -24,17 +24,11 @@ const page404 = (txt) => {
           domProps: {
             innerHTML: txt
           },
+          class: 'm-5 text-info text-center'
         },
       );
-      const alert = h('div',
-        {
-          class: 'm-5 alert alert-warning'
-        },
-        [h3]
-      );
-
-      return h('div', { class: 'text-center' }, [h(logo),alert]);
-      // return h('div', { class: 'text-center' }, [h(lo), alert]);
+     
+      return h('div', [h(logo),h3]);
     }
   };
 };

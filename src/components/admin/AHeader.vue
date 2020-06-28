@@ -56,26 +56,26 @@ import {
 } from "bootstrap-vue";
 
 const navArr = [
-  {
-    title: "AAAA",
-    type: "dropdown",
-    arr: [
-      { type: "item", href: "#", text: "a1" },
-      { type: "item", href: "#", text: "a2" },
-      { type: "divider" },
-      { type: "item", href: "#", text: "a3" },
-      { type: "item", href: "#", text: "a4" }
-    ]
-  },
-  {
-    title: "BBBB",
-    type: "dropdown",
-    arr: [
-      { type: "item", href: "#", text: "b1" },
-      { type: "item", href: "#", text: "b2" },
-      { type: "item", href: "#", text: "b3" }
-    ]
-  },
+  // {
+  //   title: "AAAA",
+  //   type: "dropdown",
+  //   arr: [
+  //     { type: "item", href: "#", text: "a1" },
+  //     { type: "item", href: "#", text: "a2" },
+  //     { type: "divider" },
+  //     { type: "item", href: "#", text: "a3" },
+  //     { type: "item", href: "#", text: "a4" }
+  //   ]
+  // },
+  // {
+  //   title: "BBBB",
+  //   type: "dropdown",
+  //   arr: [
+  //     { type: "item", href: "#", text: "b1" },
+  //     { type: "item", href: "#", text: "b2" },
+  //     { type: "item", href: "#", text: "b3" }
+  //   ]
+  // },
   {
     title: "Emqx",
     type: "dropdown",
@@ -88,7 +88,15 @@ const navArr = [
     title: "终端数据",
     type: "router-link",
     name: "terminal-data",
-  }
+  },
+  {
+    title: "设备",
+    type: "dropdown",
+    arr: [
+      { type: "router-link", name: "equipment-info", text: "设备概要" },
+      { type: "router-link", name: "equipment-data", text: "设备数据" },
+    ]
+  },
 ];
 
 export default {

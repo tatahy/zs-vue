@@ -2,8 +2,9 @@
   <div >
     <hr>
     <div class="foot-nav d-flex justify-content-center">
-      <div class="px-1 w-25" v-for="itm in itmArr" v-bind:key="itm.title">
-        <dl class="text-center">
+      <div class="ml-5 w-25" v-for="itm in itmArr" v-bind:key="itm.title">
+        <dl class="ml-5">
+        <!-- <dl class="text-center"> -->
           <dt class="pb-2">{{itm.title}}</dt>
           <dd v-for="arr in itm.aTag" v-bind:key="arr.text">
             <a v-bind:href="arr.href" v-bind:target="arr.target">{{arr.text}}</a>

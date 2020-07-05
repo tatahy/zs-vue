@@ -114,13 +114,13 @@ export default {
   computed: {},
   watch: {
     // "brief.showClass": {
-    brief: {
-      handler() {
-       console.log('watch ',this.brief.showClass);
-      },
-      deep: true,
-      immediate: true
-    }
+    // brief: {
+    //   handler() {
+    //    console.log('watch ',this.brief.showClass);
+    //   },
+    //   deep: true,
+    //   immediate: true
+    // }
   },
   methods: {
     getDataBrief: async function() {
@@ -158,7 +158,7 @@ export default {
 
       if (show && Object.keys(obj).includes(str)) {
         spanCls += obj[str];
-        console.log(show, spanCls);
+        // console.log(show, spanCls);
       }
 
       return spanCls;

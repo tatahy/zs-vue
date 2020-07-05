@@ -50,12 +50,7 @@
             v-bind:aria-expanded="info.visible ? 'true' : 'false'"
             v-on:click="info.visible=!info.visible"
           >隐藏</b-button>
-          <b-button
-            variant="outline-primary"
-            size="sm"
-            v-show="showBtnReset"
-            v-on:click="resetTblInfo"
-          >重置</b-button>
+          <b-button variant="outline-primary" size="sm" v-on:click="resetTblInfo">重置</b-button>
         </div>
         <footer v-if="tblSubTitle" class="blockquote-footer">{{tblSubTitle}}</footer>
       </blockquote>
@@ -77,12 +72,7 @@
 </template>
 
 <script>
-import {
-  BSpinner,
-  BCollapse,
-  BButton,
-  VBTooltip
-} from "bootstrap-vue";
+import { BSpinner, BCollapse, BButton, VBTooltip } from "bootstrap-vue";
 
 import { asyFetch, getServUrl } from "@/utility/util";
 
@@ -306,9 +296,14 @@ export default {
       }
     },
     resetTblInfo: function() {
-      this.info.ready = false;
+      const totalNum = this.brief.totalNum;
+      const infoNum = this.info.items.length;
+
       this.setCardsShow();
-      this.initDataInfo();
+      if (totalNum - infoNum) {
+        this.info.ready = false;
+        this.initDataInfo();
+      }
     },
     updateItems: async function(plugStr, obj) {
       // $event.preventDefault;

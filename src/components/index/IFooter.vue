@@ -2,8 +2,8 @@
   <div >
     <hr>
     <div class="foot-nav d-flex justify-content-center">
-      <div class="ml-5 w-25" v-for="itm in itmArr" v-bind:key="itm.title">
-        <dl class="ml-5">
+      <div class="w-25" v-for="itm in itmArr" v-bind:key="itm.title">
+        <dl class="">
         <!-- <dl class="text-center"> -->
           <dt class="pb-2">{{itm.title}}</dt>
           <dd v-for="arr in itm.aTag" v-bind:key="arr.text">
@@ -13,8 +13,8 @@
       </div>
     </div>
 
-    <p class="text-center">
-      <span>中术有限公司</span>
+    <p class="text-center mt-2">
+      <span>中术智能制造技术有限公司</span>
       <br>
       <span>版权所有{{year-1+'~'+year}}</span>
     </p>

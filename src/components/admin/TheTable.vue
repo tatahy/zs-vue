@@ -61,10 +61,11 @@ export default {
   computed: {},
   methods: {
     setStatusCls(str){
+      const pref='px-2 alert-';
       const clsArr=[
-        {txt:'正常',value:'px-2 py-1 alert-success'},
-        {txt:'异常',value:'px-2 py-1 alert-danger'},
-        {txt:'离线',value:'px-2 py-1 alert-warning'},
+        {txt:'正常',value:pref+'success'},
+        {txt:'异常',value:pref+'danger'},
+        {txt:'离线',value:pref+'warning'},
       ];
       let cls='';
         

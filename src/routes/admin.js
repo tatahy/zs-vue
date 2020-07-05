@@ -71,7 +71,7 @@ export default {
       name: 'equipment-info',
       components: {
         // title: headerCom({ text: '"设备概要信息"' }),
-        container: () => import('@/components/admin/equipment/EquipmentInfo.vue'),
+        container: () => import('@/components/admin/equipment/Information.vue'),
       }
     },
     {

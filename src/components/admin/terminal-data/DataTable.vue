@@ -1,52 +1,23 @@
 <template>
   <div>
     <h1 class="text-center">"终端采集的数据"</h1>
+
     <div>
-      <!-- <h5 class="text-warning">Terminals Info:</h5> -->
-      <!-- table  -->
-      <!-- <template v-if="info.ready">
-        <TheArrayList
-          v-bind:list-val="info.items"
-          list-val-name="Info"
-          col-length="2"
-          align-vertical="start"
+ 
+      <template v-if="rawData.ready">
+        <TheTable
+          head-bg="bg-info"
+          v-bind:fields="rawData.fields"
+          v-bind:fieldsChn="rawData.fieldsChn"
+          v-bind:items="rawData.items"
         />
-
-        <TheTable v-bind:fields="info.fields" v-bind:items="info.items" />
-      </template>-->
-
-      <!-- <TheTable 
-        head-bg="bg-warning text-center" 
-        v-if="info.ready" 
-        v-bind:fields="info.fields" 
-        v-bind:fieldsChn="info.fieldsChn"
-        v-bind:items="info.items" 
-      
-      />
-
-      <div v-else class="text-center">
-        <b-spinner variant="warning" label="loading..."></b-spinner>
-      </div> -->
-    </div>
-    <br />
-    <div>
-      <!-- <h5 class="text-info">终端数据：</h5> -->
-      <!-- charts -->
-      <!-- <TheArrayList
-        v-if="rawData.ready"
-        v-bind:list-val="rawData.items"
-        list-val-name="items"
-        col-length="2"
-        align-vertical="start"
-      /> -->
-       <TheTable 
-        head-bg="bg-info" 
-        v-if="rawData.ready" 
-        v-bind:fields="rawData.fields" 
-        v-bind:fieldsChn="rawData.fieldsChn"
-        v-bind:items="rawData.items" 
-      
-      />
+        <h4 
+          v-if="rawData.items.length==0" 
+          class="text-center mt-5"
+        >
+        <span class="alert alert-primary">无数据 </span>
+        </h4>
+      </template>
 
       <div v-else class="text-center">
         <b-spinner variant="primary" label="loading..."></b-spinner>
@@ -57,7 +28,7 @@
       resData:
       <br />
       {{resData}}
-    </p> -->
+    </p>-->
 
     <!-- <p>
       items:
@@ -96,13 +67,22 @@ export default {
       // },
       rawData: {
         tbName: "data_raw",
-        fields: ['info_id','terminal_sn','data','module_info','create_time'],
+        //定义表头字段值和顺序
+        fields: [
+          "info_id",
+          "terminal_sn",
+          "data",
+          "create_time",
+          "module_info",
+          "module_time"
+        ],
         fieldsChn: {
-          info_id:'终端编号',
-          terminal_sn:'终端序列号',
-          data:'采集数据',
-          create_time:'记录时间',
-          module_info:'模块信息'
+          info_id: "终端编号",
+          terminal_sn: "终端序列号",
+          data: "采集数据",
+          create_time: "记录时间",
+          module_info: "模块信息",
+          module_time: "模块时间"
         },
         items: [],
         ready: false
@@ -111,11 +91,21 @@ export default {
     };
   },
   methods: {
-    initDataVal: async function(obj) {
+    initDataVal: async function() {
+      const obj = this.rawData;
       const res = await this.fetchTbData(obj);
+      const getOverlap = (arr1, arr2) => {
+        let arr = [];
+        arr1.forEach(el => {
+          if (arr2.includes(el)) {
+            arr.push(el);
+          }
+        });
+        return arr;
+      };
 
       if (res.ok) {
-        obj.fields = res.cont.fields;
+        obj.fields = getOverlap(obj.fields, res.cont.fields);
         obj.items = res.cont.items;
         obj.ready = true;
       }
@@ -127,7 +117,9 @@ export default {
         where: "",
         page: ""
       };
-      query = Object.assign({}, queryDefault, query);
+      //vue Router中的查询条件
+      const routerQuery = this.$router.history.current.query;
+      query = Object.assign({}, queryDefault, query, routerQuery);
       const opt = { method: "POST", body: JSON.stringify(query) };
       const url = this.url + "terminal";
 
@@ -142,7 +134,7 @@ export default {
   created() {
     // this.initData();
     // this.initDataVal(this.info);
-    this.initDataVal(this.rawData);
+    this.initDataVal();
   }
 };
 </script>

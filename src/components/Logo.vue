@@ -1,6 +1,6 @@
 <template>
-  <div class="text-center">
-    <img class="pt-5" alt="ZS logo" src="@/assets/logo-icon.png">
+  <div class="text-center ">
+    <img class="pt-5 w-25" alt="ZS logo" src="@/assets/logo-icon.png">
   </div>
 </template>
 
@@ -13,5 +13,6 @@ export default {
 </script>
 
 <style scoped>
+
 
 </style>

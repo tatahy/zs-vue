@@ -113,14 +113,11 @@ export default {
   },
   computed: {},
   watch: {
-    // "brief.showClass": {
-    // brief: {
-    //   handler() {
-    //    console.log('watch ',this.brief.showClass);
-    //   },
-    //   deep: true,
-    //   immediate: true
-    // }
+    brief: {
+      handler:'getDataBrief',
+      deep: true,
+      immediate: true
+    }
   },
   methods: {
     getDataBrief: async function() {
@@ -140,6 +137,7 @@ export default {
       }
     },
     updateItems(opt) {
+      // console.log('Card: ',opt);
       return this.$emit("evt-update-items", opt);
 
       // alert(evt.target.tagName);
@@ -171,9 +169,10 @@ export default {
   components: {
     BTooltip
   },
-  created() {
-    this.getDataBrief();
-  },
+  // 与watch中定义处理函数作用相同。
+  // created() {
+  //   this.getDataBrief();
+  // },
   // directives: {
   //   "b-tooltip": VBTooltip
   // },

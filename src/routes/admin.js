@@ -3,25 +3,41 @@ import logo from '@/components/Logo.vue';
 
 //渲染函数生成的组件
 const headerCom = (opt) => {
-  const optdefault = { text: 'error', tag: 'h1', class: 'my-2 text-center' };
+  const optdefault = { txt: 'error', tag: 'h1', class: 'my-2 text-center' };
   opt = Object.assign({}, optdefault, opt);
-
   return {
     render: (createElement) => {
       const h = createElement;
-      const h1 = h(
-        opt.tag,
-        {
-          domProps: {
-            innerHTML: opt.text
+      const node = (prop) => {
+        return h(
+          prop.tag,
+          {
+            // domProps: {
+            //   innerHTML: prop.txt
+            // },
+            class: prop.class
           },
-          class: opt.class
-        },
-      );
-      return h1;
+          [prop.txt],
+        );
+      };
+
+      return node(opt);
+      // return h(
+      //   opt.tag,
+      //   {
+      //     domProps: {
+      //       innerHTML: opt.txt
+      //     },
+      //     class: opt.class
+      //   },
+      // );
     }
   };
 };
+const emqxTitle = [
+  { txt: '"EmqX Http-API Test"' },
+  { txt: '"EmqX Mqtt-Client Test"' }
+];
 
 export default {
   //顶层路由
@@ -46,7 +62,7 @@ export default {
       path: 'emqx/httpapi',
       name: 'http-api',
       components: {
-        title: headerCom({ text: '"EmqX Http-API Test"' }),
+        title: headerCom(emqxTitle[0]),
         container: () => import('@/components/admin/emqx-test/TheEmqxHttpApi.vue'),
       }
     },
@@ -54,7 +70,7 @@ export default {
       path: 'emqx/mqtt-client',
       name: 'mqtt-client',
       components: {
-        title: headerCom({ text: '"EmqX Mqtt-Client Test"' }),
+        title: headerCom(emqxTitle[1]),
         container: () => import('@/components/admin/emqx-test/TheMqttClient.vue'),
       }
     },
@@ -62,15 +78,23 @@ export default {
       path: 'terminal',
       name: 'terminal-data',
       components: {
-        // title:headerCom({text:'"显示终端数据"'}),
+        // title:headerCom({txt:'"显示终端数据"'}),
         container: () => import('@/components/admin/terminal-data/DataTable.vue'),
       }
     },
+    // {
+    //   path: 'terminal/:info_id',
+    //   name: 'terminal-info',
+    //   components: {
+    //     // title:headerCom({txt:'"显示终端数据"'}),
+    //     container: () => import('@/components/admin/terminal-data/DataTable.vue'),
+    //   }
+    // },
     {
       path: 'equipment/info',
       name: 'equipment-info',
       components: {
-        // title: headerCom({ text: '"设备概要信息"' }),
+        // title: headerCom({ txt: '"设备概要信息"' }),
         container: () => import('@/components/admin/equipment/Information.vue'),
       }
     },
@@ -78,8 +102,8 @@ export default {
       path: 'equipment/data',
       name: 'equipment-data',
       components: {
-        title: headerCom({ text: '"设备数据查询"' }),
-        container: () => import('@/components/Logo.vue'),
+        // title: headerCom({ txt: '"设备数据查询"' }),
+        container: () => import('@/components/admin/equipment/HandleData.vue'),
       }
     }
   ],

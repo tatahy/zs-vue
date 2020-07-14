@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <h1 class="text-center mb-4">"设备概要信息"</h1>
+  <div class="py-3">
+    <!-- <h1 class="text-center mb-4">"设备概要信息"</h1> -->
 
-    <div v-if="brief.ready" class="mt-2">
+    <div v-if="brief.ready">
       <h4 class="text-center">
         设备总数
         <b-button
@@ -19,7 +19,7 @@
         </b-button>
       </h4>
 
-      <div class="row pt-2">
+      <div class="row pt-3">
         <div class="col-md-4 mb-3" v-for="(card,idx) in cards" v-bind:key="idx">
           <Briefcard
             v-bind:class="card.showBorder?card.borderCls:'border-0'"
@@ -32,30 +32,38 @@
       </div>
     </div>
 
-    <div v-else class="text-center text-warning">
+    <div v-else class="text-center text-warning mt-5">
       <h4>加载中...</h4>
       <b-spinner></b-spinner>
     </div>
 
-    <b-collapse id="info" v-model="info.visible" class="mt-2">
-      <blockquote class="blockquote text-center">
-        <div class="d-flex justify-content-center">
-          <span>{{tblTitle}}&nbsp;</span>
-          <b-button
-            class="mx-2"
-            variant="outline-secondary"
-            size="sm"
-            aria-controls="info"
-            v-bind:class="info.visible ? null : 'collapsed'"
-            v-bind:aria-expanded="info.visible ? 'true' : 'false'"
-            v-on:click="info.visible=!info.visible"
-          >隐藏</b-button>
-          <b-button variant="outline-primary" size="sm" v-on:click="resetTblInfo">重置</b-button>
+    <b-collapse id="info" v-model="info.visible" class="mt-3">
+      <div>
+        <h5 class="text-center">
+          <span class="px-2 py-1 bg-warning rounded">{{tblTitle}}</span>
+        </h5>
+        <div class="row pt-1">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4 text-center">
+            <span v-if="tblSubTitle" class="text-muted">——{{tblSubTitle}}</span>
+          </div>
+          <div class="col-sm-4 text-right">
+            <b-button
+              class="mx-2"
+              variant="outline-secondary"
+              size="sm"
+              aria-controls="info"
+              v-bind:class="info.visible ? null : 'collapsed'"
+              v-bind:aria-expanded="info.visible ? 'true' : 'false'"
+              v-on:click="info.visible=!info.visible"
+            >隐藏</b-button>
+            <b-button variant="outline-primary" size="sm" v-on:click="resetTblInfo">重置</b-button>
+          </div>
         </div>
-        <footer v-if="tblSubTitle" class="blockquote-footer">{{tblSubTitle}}</footer>
-      </blockquote>
+      </div>
 
       <TheTable
+        class="mt-1"
         head-bg="bg-warning"
         v-if="info.ready"
         v-bind:fields="info.fields"
@@ -76,16 +84,32 @@ import { BSpinner, BCollapse, BButton, VBTooltip } from "bootstrap-vue";
 
 import { asyFetch, getServUrl } from "@/utility/util";
 
-// const info={
-
-// };
-const setFieldProp = (str, opt) => {
+//field字段内容渲染参数
+const setFieldProp = (opt = {}) => {
+  // const optDefault1 = {
+  //   txt: str,
+  //   thClass: "text-center",
+  //   tdClass: "text-center",
+  //   status: false,
+  //   tag: "span"
+  // };
   const optDefault = {
-    txt: str,
-    thClass: "text-center",
-    tdClass: "text-center",
-    status: false
+    // txt: str,
+    // thClass: "text-center",
+    // tdClass: "text-center",
+    // tag: "span",
+    status: false,
+    th: { tag: "div", class: "text-center", txt: "", children: [] },
+    td: { tag: "div", class: "text-center", txt: "", children: [] }
   };
+
+  for (let name in optDefault) {
+    if (name == "th" || name == "td") {
+      opt[name] = Object.keys(opt).includes(name)
+        ? Object.assign({}, optDefault[name], opt[name])
+        : optDefault[name];
+    }
+  }
 
   return Object.assign({}, optDefault, opt);
 };
@@ -93,51 +117,45 @@ const setFieldProp = (str, opt) => {
 const infoDef = {
   tblName: "info",
   fields: {
-    name: ["sn", "type", "name", "location", "status", "create_time"],
+    name: ["id","sn", "type", "name", "location", "status", "create_time"],
     prop: {
-      sn: setFieldProp("序列号", {
-        thClass: "text-left",
-        tdClass: "text-left"
+      sn: setFieldProp({
+        th: { txt: "序列号", class: "text-left" },
+        td: { 
+          class: "text-left" ,id:'',
+          children:[
+            {tag: "b-tooltip", txt: "显示详情", class: "",target:""},
+            {tag: "a",txt: "", class: "",id:""}
+          ] 
+        }
       }),
-      type: setFieldProp("类型"),
-      name: setFieldProp("名称"),
-      location: setFieldProp("地址"),
-      status: setFieldProp("状态", {
-        status: true
+      type: setFieldProp({
+        th: { txt: "类型" }
       }),
-      create_time: setFieldProp("记录时间")
+      name: setFieldProp({
+        th: { txt: "名称" }
+      }),
+      location: setFieldProp({
+        th: { txt: "地址" }
+      }),
+      status: setFieldProp({
+        status: true,
+        th: { txt: "状态"}
+        //   children:[
+        //     {tag: "b-tooltip", txt: "zzz", class: "",target:"btt"},
+        //     {tag: "a", txt: "状态", class: ""}
+        //   ] 
+        // },
+      }),
+      create_time: setFieldProp({
+        th: { txt: "记录时间" }
+      })
     }
   }
-};
-
-const setTagClr = tag => {
-  const clrObj = {
-    "100": "secondary",
-    "200": "success",
-    "400": "danger",
-    "500": "warning"
-  };
-
-  const preObj = {
-    span: "px-2 alert-",
-    borderLeft: "pl-2 border-left border-"
-  };
-
-  if (Object.keys(preObj).includes(tag)) {
-    for (let prop in clrObj) {
-      clrObj[prop] = preObj[tag] + clrObj[prop];
-    }
-  }
-  return clrObj;
 };
 
 //符合TP5链式查询模式的查询条件定义，是否有sql注入的可能？
 // const tp5Query = {
-//   where: {
-//     id: [">", "0"]
-//     // type:["like","镁%"]
-//   },
-
 //   // where: [
 //   //   ["id", ">", "0"]
 //   //   ['type',"like","镁%"]
@@ -156,8 +174,6 @@ export default {
   data() {
     return {
       urlBase: getServUrl() + "equipment/",
-      spanClr: setTagClr("span"),
-      borderLeftClr: setTagClr("borderLeft"),
       cards: [
         {
           title: "设备状态",
@@ -212,7 +228,7 @@ export default {
         }
       ],
       tblTitle: "设备信息概要表",
-      tblSubTitle: "",
+      tblSubTitle: "所有设备",
       brief: {
         totalNum: 0,
         ready: false
@@ -246,7 +262,7 @@ export default {
       const reqOpt = {
         tblName: "info",
         query: {
-          totalNum: { where: { id: [">", "0"] } },
+          totalNum: { where: [["id", ">", "0"]] },
           type: { group: "type" },
           location: { group: "location" },
           status: { group: "status" }
@@ -272,10 +288,10 @@ export default {
         items: [],
         fields: infoDef.fields.name,
         query: {
-          where: {
-            id: [">", "0"]
-            // type:["like","镁%"]
-          },
+          where: [
+            ["id", ">", "0"]
+            // ['type',"like","镁%"]
+          ],
           order: { create_time: "desc" }
         }
       };
@@ -283,7 +299,7 @@ export default {
 
       if (!obj.ready) {
         this.tblTitle = "设备信息概要表";
-        this.tblSubTitle = "";
+        this.tblSubTitle = "所有设备";
 
         const res = await this.fetchTbData("info", reqOpt);
 
@@ -307,24 +323,27 @@ export default {
     },
     updateItems: async function(plugStr, obj) {
       // $event.preventDefault;
-      const tblTitle = "设备信息摘要表";
+      const tblTitle = "设备信息概要表";
       const [arr, txt] = [obj.idArr, obj.txt];
+      // const totalNum = this.brief.totalNum;
+      // const infoNum = this.info.items.length;
 
       this.info.visible = true;
 
       if (this.tblSubTitle != txt) {
+        // if (totalNum - infoNum && this.tblSubTitle != txt) {
         this.info.ready = false;
         this.tblTitle = tblTitle + plugStr;
-        this.tblSubTitle = "";
+        this.tblSubTitle = txt;
         const reqOpt = {
           tblName: "info",
           items: [],
           fields: infoDef.fields.name,
           query: {
-            where: {
-              id: ["in", arr]
+            where: [
+              ["id", "in", arr]
               // type:["like","镁%"]
-            },
+            ],
             order: { create_time: "desc" }
           }
         };
@@ -339,7 +358,6 @@ export default {
         }
 
         this.info.ready = true;
-        this.tblSubTitle = txt;
       }
     },
     setCardsShow(plugStr = "") {
@@ -355,9 +373,10 @@ export default {
       }
     },
     onEvtUpdateItems(plugStr, opt) {
+      // console.log(opt);
+      // console.log(plugStr);
       this.setCardsShow(plugStr);
       this.updateItems(plugStr, opt);
-      // console.log(opt);
     }
   },
   components: {

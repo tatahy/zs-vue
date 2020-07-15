@@ -8,13 +8,12 @@
           v-if="child.tag=='a'"
           v-bind:class="child.class"
           v-bind:id="opt.id"
-          
           v-bind:href="`#/admin/terminal/?info_id=${opt.id}`"
-          target="_self" 
+          target="_self"
         >{{opt.txt}}</a>
-<!-- 
+        <!-- 
         v-bind:to="{ name: 'terminal-info', params: { info_id: opt.id }}"
-        v-on:click="onClick" -->
+        v-on:click="onClick"-->
 
         <span v-if="child.tag=='span'" v-bind:class="child.class" v-bind:id="child.id">{{child.txt}}</span>
 
@@ -25,7 +24,9 @@
         >{{child.txt}}</b-tooltip>
       </div>
     </template>
-    <template v-else>{{opt.txt}}</template>
+    <template v-else>
+      <span v-bind:class="setStatusCls(opt.txt)">{{opt.txt}}</span>
+    </template>
 
     <!-- </div> -->
   </div>
@@ -50,8 +51,25 @@ export default {
     //   this.$router.push({ name: 'terminal-data', query: { info_id:eve.target.id}});
     //   console.log(this.$router);
 
-     
     // }
+    setStatusCls(str) {
+      const pref = "px-2 alert-";
+      const clsArr = [
+        { txt: "正常", value: pref + "success" },
+        { txt: "异常", value: pref + "danger" },
+        { txt: "离线", value: pref + "warning" }
+      ];
+      let cls = "";
+
+      for (let i = 0; i < clsArr.length; i++) {
+        if (str === clsArr[i].txt) {
+          cls = clsArr[i].value;
+          break;
+        }
+      }
+
+      return cls;
+    }
   },
   components: {
     "b-tooltip": BTooltip

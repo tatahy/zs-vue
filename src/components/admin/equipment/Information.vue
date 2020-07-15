@@ -25,7 +25,7 @@
             v-bind:class="card.showBorder?card.borderCls:'border-0'"
             v-show="card.showMe"
             v-bind:title="card.title"
-            v-bind:reqOpt="card.reqOpt"
+            v-bind:items="brief[card.name]"
             v-on:evt-update-items="onEvtUpdateItems(card.plugStr,$event)"
           />
         </div>
@@ -86,18 +86,8 @@ import { asyFetch, getServUrl } from "@/utility/util";
 
 //field字段内容渲染参数
 const setFieldProp = (opt = {}) => {
-  // const optDefault1 = {
-  //   txt: str,
-  //   thClass: "text-center",
-  //   tdClass: "text-center",
-  //   status: false,
-  //   tag: "span"
-  // };
+  
   const optDefault = {
-    // txt: str,
-    // thClass: "text-center",
-    // tdClass: "text-center",
-    // tag: "span",
     status: false,
     th: { tag: "div", class: "text-center", txt: "", children: [] },
     td: { tag: "div", class: "text-center", txt: "", children: [] }
@@ -176,6 +166,7 @@ export default {
       urlBase: getServUrl() + "equipment/",
       cards: [
         {
+          name:'status',
           title: "设备状态",
           plugStr: "(状态)",
           showMe: true,
@@ -189,10 +180,11 @@ export default {
               // group: { group: "status" }
               status: { group: "status" }
               // group:  "status"
-            }
+            },
           }
         },
         {
+          name:'type',
           title: "设备类型",
           plugStr: "(类型)",
           showMe: true,
@@ -206,10 +198,11 @@ export default {
               // group: { group: "type" }
               type: { group: "type" }
               // group:"type"
-            }
+            },
           }
         },
         {
+          name:'location',
           title: "分布地域",
           plugStr: "(地域)",
           showMe: true,
@@ -223,15 +216,18 @@ export default {
               // group: { group: "location" }
               location: { group: "location" }
               // group: "location"
-            }
+            },            
           }
         }
       ],
       tblTitle: "设备信息概要表",
       tblSubTitle: "所有设备",
       brief: {
+        ready: false,
         totalNum: 0,
-        ready: false
+        type:[],
+        status:[],
+        location:[]
       },
       info: {
         fields: "",

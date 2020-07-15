@@ -14,7 +14,7 @@
     </div>
 
     <p class="text-center mt-2">
-      <span>中术智能制造技术有限公司</span>
+      <span>中术智能制造有限公司</span>
       <br>
       <span>版权所有{{year-1+'~'+year}}</span>
     </p>

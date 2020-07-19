@@ -1,6 +1,6 @@
 <template>
   <div class="table-responsive">
-    <table v-bind:class="`table table-hover ${tbClass}`">
+    <table class="table table-hover" v-bind:class="tbClass">
       <thead v-bind:class="headBg">
         <!-- <thead class="thead-light"> -->
         <tr>
@@ -8,8 +8,8 @@
             <!-- // val字段有渲染参数 -->
             <template v-if="fieldsProp.hasOwnProperty(val)">
               <!-- <div v-bind:class="fieldsProp[val]['thClass']">{{fieldsProp[val]['txt']}}</div> -->
-              
-              <TheTableCell v-bind:opt="fieldsProp[val]['th']"/>
+
+              <TheTableCell v-bind:opt="fieldsProp[val]['th']" />
             </template>
             <!-- // val字段无渲染参数 -->
             <template v-else>{{val}}</template>
@@ -21,20 +21,10 @@
           <td v-for="(val,n) in fields" v-bind:key="n">
             <!-- // val字段有渲染参数 -->
             <template v-if="fieldsProp.hasOwnProperty(val) ">
-              <!-- // 单元格内容要添加内容对应的格式 -->
-              <!-- <div v-bind:class="fieldsProp[val]['tdClass']">
-                <span
-                  v-bind:class="fieldsProp[val]['status']?setStatusCls(itm[val]):''"
-                >{{itm[val]}}</span> -->
-                <TheTableCell v-bind:opt="Object.assign({},fieldsProp[val]['td'],{txt:itm[val],id:`${itm['id']}`})"/>
-              <!-- </div> -->
-               
+              <TheTableCell
+                v-bind:opt="Object.assign({},fieldsProp[val]['td'],{txt:itm[val],id:`${itm['id']}`})"
+              />
             </template>
-            <!-- // 单元格内容要显示为<a>标签-->
-            <!-- <template v-else-if="">
-                <a id="" >{{itm[val]}}</a>
-                <b-tooltip v-bind:target="`tooltip-li-${obj.value}-${idx}`" variant="info">点击显示详细信息</b-tooltip>
-            </template>-->
 
             <!-- // val字段无渲染参数 -->
             <template v-else>{{itm[val]}}</template>
@@ -49,8 +39,6 @@
 // import {// BTooltip,
 // // VBTooltip
 // }"bootstrap-vue";
-
-
 
 export default {
   name: "TheTable",
@@ -84,7 +72,6 @@ export default {
   computed: {},
   methods: {
     setStatusCls(str) {
-      
       const pref = "px-2 alert-";
       const clsArr = [
         { txt: "正常", value: pref + "success" },
@@ -106,7 +93,7 @@ export default {
   },
   components: {
     // BTooltip
-    TheTableCell:()=>import('@/components/admin/TheTableCell.vue')
+    TheTableCell: () => import("./TheTableCell.vue")
   }
 };
 </script>

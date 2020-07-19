@@ -1,17 +1,30 @@
 <template>
   <div class="card">
-    <h5 class="m-0 text-center py-2 rounded-top bg-light">{{title}}</h5>
+    <h5 
+      class="m-0 text-center py-2 rounded-top"
+      v-bind:class="titleCls"
+      v-on:mouseover="isHover=true"
+      v-on:mouseout="isHover=false"
+      v-on:click="visible=!visible"
+    >{{title}}</h5>
 
+    <!-- v-on:mouseover="changeTitleCls('mouseover')"
+      v-on:mouseout="changeTitleCls('mouseout')" -->
+
+    <b-collapse v-bind:id="title" v-model="visible">
     <ul class="list-group list-group-flush border-top border-bottom">
       <li
-        
         class="list-group-item d-flex justify-content-between align-items-center"
         v-for="(item,idx) in items"
         v-bind:id="`tooltip-li-${item.value}-${idx}`"
         v-bind:key="idx"
         v-on:click="onUpdateItems(item)"
       >
-      <b-tooltip v-bind:target="`tooltip-li-${item.value}-${idx}`" variant="info">点击显示详细信息</b-tooltip>
+      <b-tooltip 
+        v-bind:target="`tooltip-li-${item.value}-${idx}`" 
+        variant="info"
+        placement="bottom"
+      >点击显示详细信息</b-tooltip>
          <!-- v-b-tooltip.hover
         title="点击显示详细信息" -->
         
@@ -29,12 +42,14 @@
         </span>
       </li>
     </ul>
+    </b-collapse>
   </div>
 </template>
 
 <script>
 import {
   BTooltip,
+  BCollapse,
   // VBTooltip
 } from "bootstrap-vue";
 
@@ -45,7 +60,10 @@ export default {
       type: String
       // default: ""
     },
-    
+    isShow: {
+      type: Boolean,
+      default: true
+    },
     items:{
       type:Array,
       required:true,
@@ -54,7 +72,12 @@ export default {
       }
     }
   },
-
+  data(){
+    return{
+      visible:this.isShow,
+      isHover:false
+    };
+  },
   computed: {
     showClass:function(){
       let arr=[];
@@ -62,6 +85,10 @@ export default {
         arr[i]=true;
       }
       return arr;
+    },
+    titleCls:function(){
+      let res=this.isHover || this.visible;
+      return res?'text-light bg-secondary':'bg-light';
     }
   },
   
@@ -91,19 +118,24 @@ export default {
     setShowClass(idx, val = true) {
       this.showClass[idx] = val;
       console.log("setShowClass li " + idx);
-    }
+    },
   },
   components: {
-    BTooltip
+    BTooltip,
+    BCollapse,
   },
   
 };
 </script>
 
 <style scoped>
+h5:hover {
+  cursor: pointer;
+}
+
 li:hover {
   cursor: pointer;
-  background-color: #f8f9fa;
+  background-color: #f8f9fa !important;
 }
 
 li:active,

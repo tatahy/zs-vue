@@ -1,20 +1,10 @@
 <template>
   <div class="py-3">
-    <!-- <h1 class="text-center mb-4">"设备概要信息"</h1> -->
 
     <div v-if="brief.ready">
       <h4 class="text-center">
         设备总数
-        <b-button
-          variant="primary"
-          size="sm"
-          aria-controls="info"
-          v-bind:class="info.visible ? null : 'collapsed'"
-          v-bind:aria-expanded="info.visible ? 'true' : 'false'"
-          v-on:click="info.visible=!info.visible"
-          v-b-tooltip.hover
-          title="显示/隐藏信息表"
-        >
+        <b-button variant="primary" size="sm" v-b-toggle.info v-b-tooltip.hover title="显示/隐藏信息表">
           <strong>{{brief.totalNum}}</strong>
         </b-button>
       </h4>
@@ -24,6 +14,7 @@
           <Briefcard
             v-bind:class="card.showBorder?card.borderCls:'border-0'"
             v-show="card.showMe"
+            v-bind:isShow="idx==0?true:false"
             v-bind:title="card.title"
             v-bind:items="brief[card.name]"
             v-on:evt-update-items="onEvtUpdateItems(card.plugStr,$event)"
@@ -37,26 +28,18 @@
       <b-spinner></b-spinner>
     </div>
 
-    <b-collapse id="info" v-model="info.visible" class="mt-3">
+    <b-collapse id="info" class="mt-3" v-model="infoTbl.visible">
       <div>
         <h5 class="text-center">
-          <span class="px-2 py-1 bg-warning rounded">{{tblTitle}}</span>
+          <span class="px-2 py-1 bg-warning rounded">{{infoTbl.title}}</span>
         </h5>
         <div class="row pt-1">
           <div class="col-sm-4"></div>
           <div class="col-sm-4 text-center">
-            <span v-if="tblSubTitle" class="text-muted">——{{tblSubTitle}}</span>
+            <span v-if="infoTbl.subTitle" class="text-muted">——{{infoTbl.subTitle}}</span>
           </div>
           <div class="col-sm-4 text-right">
-            <b-button
-              class="mx-2"
-              variant="outline-secondary"
-              size="sm"
-              aria-controls="info"
-              v-bind:class="info.visible ? null : 'collapsed'"
-              v-bind:aria-expanded="info.visible ? 'true' : 'false'"
-              v-on:click="info.visible=!info.visible"
-            >隐藏</b-button>
+            <b-button class="mx-2" variant="outline-secondary" size="sm" v-b-toggle.info>隐藏</b-button>
             <b-button variant="outline-primary" size="sm" v-on:click="resetTblInfo">重置</b-button>
           </div>
         </div>
@@ -65,10 +48,10 @@
       <TheTable
         class="mt-1"
         head-bg="bg-warning"
-        v-if="info.ready"
-        v-bind:fields="info.fields"
-        v-bind:fieldsProp="info.fieldsProp"
-        v-bind:items="info.items"
+        v-if="infoTbl.ready"
+        v-bind:fields="infoTbl.fields"
+        v-bind:fieldsProp="infoTbl.fieldsProp"
+        v-bind:items="infoTbl.items"
       />
 
       <div v-else class="text-center text-warning">
@@ -80,13 +63,18 @@
 </template>
 
 <script>
-import { BSpinner, BCollapse, BButton, VBTooltip } from "bootstrap-vue";
+import {
+  BSpinner,
+  BCollapse,
+  BButton,
+  VBTooltip,
+  VBToggle
+} from "bootstrap-vue";
 
 import { asyFetch, getServUrl } from "@/utility/util";
 
 //field字段内容渲染参数
 const setFieldProp = (opt = {}) => {
-  
   const optDefault = {
     status: false,
     th: { tag: "div", class: "text-center", txt: "", children: [] },
@@ -104,19 +92,20 @@ const setFieldProp = (opt = {}) => {
   return Object.assign({}, optDefault, opt);
 };
 
-const infoDef = {
+const tableDef = {
   tblName: "info",
   fields: {
-    name: ["id","sn", "type", "name", "location", "status", "create_time"],
+    name: ["id", "sn", "type", "name", "location", "status", "create_time"],
     prop: {
       sn: setFieldProp({
         th: { txt: "序列号", class: "text-left" },
-        td: { 
-          class: "text-left" ,id:'',
-          children:[
-            {tag: "b-tooltip", txt: "显示详情", class: "",target:""},
-            {tag: "a",txt: "", class: "",id:""}
-          ] 
+        td: {
+          class: "text-left",
+          id: "",
+          children: [
+            { tag: "b-tooltip", txt: "显示详情", class: "", target: "" },
+            { tag: "a", txt: "", class: "", id: "" ,href:'#/admin/equipment/data/?info_id='}
+          ]
         }
       }),
       type: setFieldProp({
@@ -130,11 +119,11 @@ const infoDef = {
       }),
       status: setFieldProp({
         status: true,
-        th: { txt: "状态"}
+        th: { txt: "状态" }
         //   children:[
         //     {tag: "b-tooltip", txt: "zzz", class: "",target:"btt"},
         //     {tag: "a", txt: "状态", class: ""}
-        //   ] 
+        //   ]
         // },
       }),
       create_time: setFieldProp({
@@ -166,7 +155,7 @@ export default {
       urlBase: getServUrl() + "equipment/",
       cards: [
         {
-          name:'status',
+          name: "status",
           title: "设备状态",
           plugStr: "(状态)",
           showMe: true,
@@ -180,11 +169,11 @@ export default {
               // group: { group: "status" }
               status: { group: "status" }
               // group:  "status"
-            },
+            }
           }
         },
         {
-          name:'type',
+          name: "type",
           title: "设备类型",
           plugStr: "(类型)",
           showMe: true,
@@ -198,11 +187,11 @@ export default {
               // group: { group: "type" }
               type: { group: "type" }
               // group:"type"
-            },
+            }
           }
         },
         {
-          name:'location',
+          name: "location",
           title: "分布地域",
           plugStr: "(地域)",
           showMe: true,
@@ -216,32 +205,33 @@ export default {
               // group: { group: "location" }
               location: { group: "location" }
               // group: "location"
-            },            
+            }
           }
         }
       ],
-      tblTitle: "设备信息概要表",
-      tblSubTitle: "所有设备",
       brief: {
         ready: false,
         totalNum: 0,
-        type:[],
-        status:[],
-        location:[]
+        type: [],
+        status: [],
+        location: []
       },
-      info: {
+      infoTbl: {
+        title: "设备信息概要表",
+        subTitle: "所有设备",
         fields: "",
-        fieldsProp: infoDef.fields.prop,
+        fieldsProp: tableDef.fields.prop,
         items: [],
         ready: false,
-        visible: false
-      }
+        visible:false
+      },
+      
     };
   },
   computed: {
     showBtnReset: function() {
       const totalNum = this.brief.totalNum;
-      const infoNum = this.info.items.length;
+      const infoNum = this.infoTbl.items.length;
 
       return totalNum - infoNum ? true : false;
     }
@@ -282,7 +272,7 @@ export default {
       const reqOpt = {
         tblName: "info",
         items: [],
-        fields: infoDef.fields.name,
+        fields: tableDef.fields.name,
         query: {
           where: [
             ["id", ">", "0"]
@@ -291,11 +281,11 @@ export default {
           order: { create_time: "desc" }
         }
       };
-      const obj = this.info;
+      const obj = this.infoTbl;
 
       if (!obj.ready) {
-        this.tblTitle = "设备信息概要表";
-        this.tblSubTitle = "所有设备";
+        obj.title = "设备信息概要表";
+        obj.subTitle = "所有设备";
 
         const res = await this.fetchTbData("info", reqOpt);
 
@@ -303,41 +293,42 @@ export default {
           obj.fields = res.cont.fields;
           obj.items = res.cont.items;
           obj.ready = true;
-          // console.log(this.info);
+          // console.log(this.infoTbl);
         }
       }
     },
     resetTblInfo: function() {
       const totalNum = this.brief.totalNum;
-      const infoNum = this.info.items.length;
+      const infoNum = this.infoTbl.items.length;
 
       this.setCardsShow();
       if (totalNum - infoNum) {
-        this.info.ready = false;
+        this.infoTbl.ready = false;
         this.initDataInfo();
       }
     },
     updateItems: async function(plugStr, obj) {
       // $event.preventDefault;
-      const tblTitle = "设备信息概要表";
-      const [arr, txt] = [obj.idArr, obj.txt];
-      // const totalNum = this.brief.totalNum;
-      // const infoNum = this.info.items.length;
+      const [title, subTitle,idArr] = ["设备信息概要表", obj.txt,obj.idArr];
+      const tbl=this.infoTbl;
 
-      this.info.visible = true;
+      tbl.visible=true;
+      
+      // this.$root.$emit('bv::toggle::collapse', 'info');
 
-      if (this.tblSubTitle != txt) {
-        // if (totalNum - infoNum && this.tblSubTitle != txt) {
-        this.info.ready = false;
-        this.tblTitle = tblTitle + plugStr;
-        this.tblSubTitle = txt;
+      if (tbl.subTitle != subTitle) {
+        
+        tbl.ready = false;
+        tbl.title = title + plugStr;
+        tbl.subTitle = subTitle;
+
         const reqOpt = {
           tblName: "info",
           items: [],
-          fields: infoDef.fields.name,
+          fields: tableDef.fields.name,
           query: {
             where: [
-              ["id", "in", arr]
+              ["id", "in", idArr]
               // type:["like","镁%"]
             ],
             order: { create_time: "desc" }
@@ -346,14 +337,13 @@ export default {
         const res = await this.fetchTbData("info", reqOpt);
 
         // console.log($evt);
-
+        
         if (res.ok) {
-          this.info.items = res.cont.items;
-          this.info.ready = true;
-          // console.log(this.info);
+          tbl.items = res.cont.items;
+          tbl.ready = true;
         }
 
-        this.info.ready = true;
+        tbl.ready = true;
       }
     },
     setCardsShow(plugStr = "") {
@@ -373,6 +363,7 @@ export default {
       // console.log(plugStr);
       this.setCardsShow(plugStr);
       this.updateItems(plugStr, opt);
+      
     }
   },
   components: {
@@ -380,10 +371,11 @@ export default {
     BCollapse,
     BButton,
     TheTable: () => import("@/components/admin/TheTable.vue"),
-    Briefcard: () => import("@/components/admin/equipment/Briefcard.vue")
+    Briefcard: () => import("./Briefcard.vue")
   },
   directives: {
-    "b-tooltip": VBTooltip
+    "b-tooltip": VBTooltip,
+    "b-toggle": VBToggle
   },
   created() {
     this.initDataInfo();

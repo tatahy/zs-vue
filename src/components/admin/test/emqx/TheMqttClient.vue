@@ -572,7 +572,7 @@ export default {
     BFormGroup,
     BFormInput,
     BFormRadioGroup,
-    TheArrayList: () => import("@/components/admin/emqx-test/TheArrayList.vue")
+    TheArrayList: () => import("./TheArrayList.vue")
   },
   created() {
     this.connOptInit();

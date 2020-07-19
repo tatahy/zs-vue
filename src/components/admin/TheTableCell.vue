@@ -8,7 +8,7 @@
           v-if="child.tag=='a'"
           v-bind:class="child.class"
           v-bind:id="opt.id"
-          v-bind:href="`#/admin/terminal/?info_id=${opt.id}`"
+          v-bind:href="child.href+opt.id"
           target="_self"
         >{{opt.txt}}</a>
         <!-- 
@@ -18,8 +18,8 @@
         <span v-if="child.tag=='span'" v-bind:class="child.class" v-bind:id="child.id">{{child.txt}}</span>
 
         <b-tooltip
-          v-bind:target="opt.id"
           v-if="child.tag=='b-tooltip'"
+          v-bind:target="opt.id"
           v-bind:class="child.class"
         >{{child.txt}}</b-tooltip>
       </div>

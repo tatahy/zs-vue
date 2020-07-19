@@ -34,10 +34,6 @@ const headerCom = (opt) => {
     }
   };
 };
-const emqxTitle = [
-  { txt: '"EmqX Http-API Test"' },
-  { txt: '"EmqX Mqtt-Client Test"' }
-];
 
 export default {
   //顶层路由
@@ -55,41 +51,10 @@ export default {
       path: '',
       name: 'admin',
       components: {
+        title: headerCom({txt:"后台管理系统"}),
         container: logo,
       }
     },
-    {
-      path: 'emqx/httpapi',
-      name: 'http-api',
-      components: {
-        title: headerCom(emqxTitle[0]),
-        container: () => import('@/components/admin/emqx-test/TheEmqxHttpApi.vue'),
-      }
-    },
-    {
-      path: 'emqx/mqtt-client',
-      name: 'mqtt-client',
-      components: {
-        title: headerCom(emqxTitle[1]),
-        container: () => import('@/components/admin/emqx-test/TheMqttClient.vue'),
-      }
-    },
-    {
-      path: 'terminal',
-      name: 'terminal-data',
-      components: {
-        // title:headerCom({txt:'"显示终端数据"'}),
-        container: () => import('@/components/admin/terminal-data/DataTable.vue'),
-      }
-    },
-    // {
-    //   path: 'terminal/:info_id',
-    //   name: 'terminal-info',
-    //   components: {
-    //     // title:headerCom({txt:'"显示终端数据"'}),
-    //     container: () => import('@/components/admin/terminal-data/DataTable.vue'),
-    //   }
-    // },
     {
       path: 'equipment/info',
       name: 'equipment-info',
@@ -103,8 +68,40 @@ export default {
       name: 'equipment-data',
       components: {
         // title: headerCom({ txt: '"设备数据查询"' }),
-        container: () => import('@/components/admin/equipment/HandleData.vue'),
+        container: () => import('@/components/admin/equipment/module/DataTable.vue'),
       }
-    }
+    },
+    {
+      path: 'test/httpapi',
+      name: 'emqx-http-api',
+      components: {
+        // title: headerCom({ txt: '"设备数据查询"' }),
+        container: () => import('@/components/admin/test/emqx/TheEmqxHttpApi.vue'),
+      }
+    },
+    {
+      path: 'test/mqttclient',
+      name: 'emqx-mqtt-client',
+      components: {
+        // title: headerCom({ txt: '"设备数据查询"' }),
+        container: () => import('@/components/admin/test/emqx/TheMqttClient.vue'),
+      }
+    },
+    {
+      path: 'test/postdata',
+      name: 'post-data',
+      components: {
+        // title: headerCom({ txt: '"设备数据查询"' }),
+        container: () => import('@/components/admin/test/PostData.vue'),
+      }
+    },
+    {
+      path: 'module',
+      name: 'module',
+      components: {
+        // title:headerCom({txt:'"显示终端数据"'}),
+        container: () => import('@/components/admin/module/TheModule.vue'),
+      }
+    },
   ],
 };

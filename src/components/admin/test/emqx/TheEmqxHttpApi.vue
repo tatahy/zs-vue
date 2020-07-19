@@ -213,7 +213,7 @@ export default {
     BButton,
     BFormSelect,
     BBadge,
-    TheArrayList: () => import("@/components/admin/emqx-test/TheArrayList.vue")
+    TheArrayList: () => import("./TheArrayList.vue")
   }
 };
 </script>

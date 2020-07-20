@@ -37,7 +37,7 @@ export default {
     return {
       url: getServUrl(),
       // info: {
-      //   tbName: "info",
+      //   tblName: "info",
       //   fields: [],
       //   fieldsChn: {
       //     sn:'序列号',
@@ -50,7 +50,7 @@ export default {
       //   ready: false
       // },
       rawData: {
-        tbName: "data_raw",
+        tblName: "data_raw",
         //定义表头字段值和顺序
         fields: [
           "info_id",
@@ -107,7 +107,7 @@ export default {
       obj.items = [];
 
       const queryDefault = {
-        tbName: "info",
+        tblName: "info",
         fields: [],
         where: "",
         page: ""

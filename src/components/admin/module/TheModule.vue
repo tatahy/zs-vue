@@ -3,8 +3,11 @@
     <h1 class="text-center">"Form区"</h1>
 
     <h1 class="text-center">"Chart区"</h1>
-    <p>Group by "sn"</p>
-    <p>{{res}}</p>
+    <p>
+      Group by "info_id"
+      <b-button variant="outline-primary" size="sm" v-on:click="getGroups">设备</b-button>
+    </p>
+    <p>{{groups}}</p>
     <h1 class="text-center">"Table区"</h1>
 
     <div>
@@ -28,7 +31,13 @@
 </template>
 
 <script>
-import { BSpinner } from "bootstrap-vue";
+import {
+  BSpinner,
+  // BCollapse,
+  BButton
+  // VBTooltip,
+  // VBToggle
+} from "bootstrap-vue";
 
 import { asyFetch, getServUrl } from "@/utility/util";
 
@@ -42,7 +51,7 @@ export default {
     return {
       url: getServUrl(),
       rawData: {
-        tbName: "data_raw",
+        tblName: "data_raw",
         //定义表头字段值和顺序
         fields: [
           "info_id",
@@ -63,8 +72,8 @@ export default {
         items: [],
         ready: false
       },
-      req:null,
-      res:null,
+      req: null,
+      groups: null
     };
   },
   computed: {
@@ -85,7 +94,7 @@ export default {
   },
   methods: {
     initDataVal: async function() {
-       //得到2个数组的合集
+      //得到2个数组的合集
       const getOverlap = (arr1, arr2) => {
         let arr = [];
         arr1.forEach(el => {
@@ -98,10 +107,8 @@ export default {
       const obj = this.rawData;
       obj.ready = false;
       obj.items = [];
-      this.req=Object.assign({},obj);
-      const res = await this.fetchTbData();
-     
-      // console.log(this.$route);
+      this.req = Object.assign({}, obj);
+      const res = await this.fetchTbData("terminal");
 
       if (res.ok) {
         obj.fields = getOverlap(obj.fields, res.cont.fields);
@@ -109,22 +116,44 @@ export default {
         obj.ready = true;
       }
     },
-    fetchTbData: async function() {
+    fetchTbData: async function(routeStr) {
+      const routeArr = ["terminal", "equipment/read"];
       const reqDefault = {
-        tbName: "info",
+        tblName: "info",
         fields: [],
         where: "",
         page: ""
       };
       //合并vue Router中的查询条件
-      const req=Object.assign({}, reqDefault, this.req,this.routeQuery);
+      const req = Object.assign({}, reqDefault, this.req, this.routeQuery);
       const opt = { method: "POST", body: JSON.stringify(req) };
-      const url = this.url + "terminal";
+      const url = routeArr.includes(routeStr)
+        ? this.url + routeStr
+        : this.url + routeArr[0];
+      // const url = this.url + "equipment/data";
       return await asyFetch(url, opt);
+    },
+    getGroups:async function(){
+      // console.log('haah');
+      const req={
+        tblName: "data_raw",
+        query:{
+          group:'info_id'
+        }
+        // fields: [],
+        // where: "",
+        // page: ""
+      };
+
+      this.req=Object.assign({},req);
+      this.groups=null;
+    
+      this.groups=await this.fetchTbData("equipment/read");
     }
   },
   components: {
     BSpinner,
+    BButton,
     TheTable: () => import("./TheTable.vue")
     // TheTable: () => import("@/components/admin/TheTable.vue")
   },

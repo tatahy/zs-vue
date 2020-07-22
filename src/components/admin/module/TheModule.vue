@@ -5,9 +5,24 @@
     <h1 class="text-center">"Chart区"</h1>
     <p>
       Group by "info_id"
-      <b-button variant="outline-primary" size="sm" v-on:click="getGroups">设备</b-button>
     </p>
-    <p>{{groups}}</p>
+    <div>
+      <template v-if="groups.ready">
+        <TheTable
+          head-bg="bg-dark text-light"
+          v-bind:fields="groups.fields"
+          v-bind:fieldsChn="groups.fieldsChn"
+          v-bind:items="groups.items"
+        />
+        <h4 v-if="groups.items.length==0" class="text-center mt-5">
+          <span class="alert alert-primary">无数据</span>
+        </h4>
+      </template>
+      <div v-else class="text-center">
+        <b-spinner variant="secondary" label="loading..."></b-spinner>
+      </div>
+    </div>
+
     <h1 class="text-center">"Table区"</h1>
 
     <div>
@@ -34,7 +49,7 @@
 import {
   BSpinner,
   // BCollapse,
-  BButton
+  // BButton
   // VBTooltip,
   // VBToggle
 } from "bootstrap-vue";
@@ -73,7 +88,20 @@ export default {
         ready: false
       },
       req: null,
-      groups: null
+      groups: {
+        fields: ["info_id", "sn","type","name","customer_id","location","data",],
+        fieldsChn: {
+          info_id: "设备编号",
+          sn:"设备序列号",
+          type:"设备类型",
+          name:"设备名称",
+          customer_id:"客户编号",
+          location:"设备所在地",
+          data: "采集数据"
+        },
+        items: [],
+        ready: false
+      }
     };
   },
   computed: {
@@ -87,13 +115,13 @@ export default {
       const query = Object.assign({}, this.$route.query);
       // 路由发生变化
       if (!Object.keys(query).length) {
-        this.initDataVal();
+        this.initData();
       }
       return query;
     }
   },
   methods: {
-    initDataVal: async function() {
+    initData: async function() {
       //得到2个数组的合集
       const getOverlap = (arr1, arr2) => {
         let arr = [];
@@ -117,7 +145,7 @@ export default {
       }
     },
     fetchTbData: async function(routeStr) {
-      const routeArr = ["terminal", "equipment/read"];
+      const routeArr = ["terminal", "equipment/group"];
       const reqDefault = {
         tblName: "info",
         fields: [],
@@ -133,32 +161,37 @@ export default {
       // const url = this.url + "equipment/data";
       return await asyFetch(url, opt);
     },
-    getGroups:async function(){
+    initGroups: async function() {
       // console.log('haah');
-      const req={
+      const req = {
         tblName: "data_raw",
-        query:{
-          group:'info_id'
+        query: {
+          group: "info_id"
         }
         // fields: [],
         // where: "",
         // page: ""
       };
+      const groups=this.groups;
 
-      this.req=Object.assign({},req);
-      this.groups=null;
-    
-      this.groups=await this.fetchTbData("equipment/read");
+      this.req = Object.assign({}, req);
+      const res = await this.fetchTbData("equipment/group");
+
+      if (res.ok) {
+        groups.items = res.cont.items;
+        groups.ready=true;
+      }
     }
   },
   components: {
     BSpinner,
-    BButton,
+    // BButton,
     TheTable: () => import("./TheTable.vue")
     // TheTable: () => import("@/components/admin/TheTable.vue")
   },
   created() {
-    this.initDataVal();
+    this.initData();
+    this.initGroups();
   }
 };
 </script>

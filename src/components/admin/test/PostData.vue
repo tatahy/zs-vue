@@ -29,7 +29,7 @@
           >
             <b-form-input id="equipmentId" v-model="form.info_id"></b-form-input>
           </b-form-group>
-          <b-form-group label-cols-sm="3" label="SN:" label-align-sm="right" label-for="sn">
+          <b-form-group label-cols-sm="3" label="模块SN:" label-align-sm="right" label-for="sn">
             <b-form-input id="sn" v-model="form.data.module.sn"></b-form-input>
           </b-form-group>
 

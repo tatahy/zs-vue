@@ -4,30 +4,36 @@
       <thead v-bind:class="headBg">
         <!-- <thead class="thead-light"> -->
         <tr>
-          <th v-for="(val,idx) in fields" v-bind:key="idx">
+          <th v-for="(name,idx) in fields" v-bind:key="idx">
             <!-- // val字段有渲染参数 -->
-            <template v-if="fieldsProp.hasOwnProperty(val)">
+            <template v-if="fieldsProp.hasOwnProperty(name)">
               <!-- <div v-bind:class="fieldsProp[val]['thClass']">{{fieldsProp[val]['txt']}}</div> -->
 
-              <TheTableCell v-bind:opt="fieldsProp[val]['th']" />
+              <TheTableCell v-bind:opt="fieldsProp[name]['th']" />
             </template>
             <!-- // val字段无渲染参数 -->
-            <template v-else>{{val}}</template>
+            <template v-else>{{name}}</template>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(itm,m) in items" v-bind:key="m">
-          <td v-for="(val,n) in fields" v-bind:key="n">
+          <td v-for="(name,n) in fields" v-bind:key="n">
             <!-- // val字段有渲染参数 -->
-            <template v-if="fieldsProp.hasOwnProperty(val) ">
+            <template v-if="fieldsProp.hasOwnProperty(name) ">
               <TheTableCell
-                v-bind:opt="Object.assign({},fieldsProp[val]['td'],{txt:itm[val],id:`${itm['id']}`})"
+                v-bind:opt="Object.assign(
+                  {},
+                  fieldsProp[name]['td'],
+                  {
+                    txt:itm[name],
+                    id:fieldsProp[name]['td'].hasOwnProperty('id')?{name:fieldsProp[name]['td']['id']['name'],val:itm[fieldsProp[name]['td']['id']['name']]}:null}
+                  )"
               />
             </template>
 
             <!-- // val字段无渲染参数 -->
-            <template v-else>{{itm[val]}}</template>
+            <template v-else>{{itm[name]}}</template>
           </td>
         </tr>
       </tbody>

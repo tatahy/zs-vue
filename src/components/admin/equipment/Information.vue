@@ -101,7 +101,7 @@ const tableDef = {
         th: { txt: "序列号", class: "text-left" },
         td: {
           class: "text-left",
-          id: "",
+          id: {name:'id',val:''},
           children: [
             { tag: "b-tooltip", txt: "显示详情", class: "", target: "" },
             { tag: "a", txt: "", class: "", id: "" ,href:'#/admin/equipment/data/?info_id='}

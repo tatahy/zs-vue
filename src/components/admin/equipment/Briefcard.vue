@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <h5 
-      class="m-0 text-center py-2 rounded-top"
+      class="m-0 text-center py-2 rounded-top hover-pointer"
       v-bind:class="titleCls"
       v-on:mouseover="isHover=true"
       v-on:mouseout="isHover=false"
@@ -129,7 +129,7 @@ export default {
 </script>
 
 <style scoped>
-h5:hover {
+.hover-pointer:hover {
   cursor: pointer;
 }
 

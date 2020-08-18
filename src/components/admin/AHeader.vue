@@ -81,7 +81,7 @@ const navArr = [
     ]
   },
   {
-    title: "模块数据",
+    title: "数据类型",
     type: "",
     name: "module"
   }

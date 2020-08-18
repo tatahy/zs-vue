@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 class="text-center">"Form区"</h1>
-
-    <h1 class="text-center">"Chart区"</h1>
-    <p>Group by "info_id"</p>
+    <!-- <h1 class="text-center">"Form区"</h1> -->
+ 
+    <h1 class="text-center mb-3">设备采集数据类型</h1>
+    <!-- <p>Group by "info_id"</p> -->
     <div>
       <template v-if="tblGroups.ready">
         <TheTable
@@ -20,10 +20,11 @@
       </template>
       <div v-else class="text-center">
         <b-spinner variant="secondary" label="loading..."></b-spinner>
+        <p class="text-center">数据传输中...</p>
       </div>
     </div>
 
-    <h1 class="text-center">"Table区"</h1>
+    <!-- <h1 class="text-center">"Table区"</h1>
 
     <div>
       <template v-if="tblRawData.ready">
@@ -41,7 +42,7 @@
       <div v-else class="text-center">
         <b-spinner variant="primary" label="loading..."></b-spinner>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -93,7 +94,7 @@ const tblRawDataDef = {
         th: { txt: "终端序列号" },
       }),
       data: setFieldProp({
-        th: { txt: "采集数据",class: "text-center" },
+        th: { txt: "采集数据", class: "text-center" },
       }),
       create_time: setFieldProp({
         th: { txt: "记录时间" },
@@ -112,7 +113,17 @@ const tblRawDataDef = {
 
 const tblGroupsDef = {
   fields: {
-    name: ["info_id", "sn", "type", "name", "customer_id", "location", "data"],
+    name: [
+      // "info_id",
+      "sn",
+      "type",
+      "name",
+      // "customer_id",
+      "location",
+      "status",
+      // "create_time",
+      "data",
+    ],
     prop: {
       info_id: setFieldProp({
         th: { txt: "设备编号" },
@@ -132,16 +143,24 @@ const tblGroupsDef = {
       location: setFieldProp({
         th: { txt: "设备所在地" },
       }),
+      status: setFieldProp({
+        th: { txt: "设备现状" },
+      }),
+      create_time: setFieldProp({
+        th: { txt: "设备注册时间" },
+      }),
       data: setFieldProp({
-        th: { txt: "采集数据", class: "text-center"},
+        th: { txt: "采集数据类型", class: "text-center" },
         td: {
-          id:{name:'info_id',val:''},
+          class: "text-center",
+          id: { name: "info_id", val: "" },
+          route: { name: "equipment-chart", query: {} },
+          txt: "",
           children: [
-            { tag: "a", txt: "", class: "", id: "" ,href:'#/admin/equipment/chart/?info_id='},
-            { tag: "b-tooltip", txt: "显示详情", class: "", target: "" }
-          ]
-        }
-
+            { tag: "a", class: "", id: "", href: "javascript()" },
+            { tag: "b-tooltip", txt: "显示详情", class: "", target: "" },
+          ],
+        },
       }),
     },
   },
@@ -199,7 +218,7 @@ export default {
       data.items = [];
 
       this.req = null;
-      this.req ={
+      this.req = {
         tblName: "data_raw",
         fields: data.fields.name,
         // where: "",
@@ -232,13 +251,10 @@ export default {
         groups.ready = true;
       }
 
-      if(groups.items.length){
+      if (groups.items.length) {
         // groups.items.forEach(el => {
-          
         // });
       }
-
-
     },
   },
   components: {

@@ -102,9 +102,11 @@ const tableDef = {
         td: {
           class: "text-left",
           id: {name:'id',val:''},
+          route:{name:'equipment-data',query:{}},
+          txt: "",
           children: [
-            { tag: "b-tooltip", txt: "显示详情", class: "", target: "" },
-            { tag: "a", txt: "", class: "", id: "" ,href:'#/admin/equipment/data/?info_id='}
+            { tag: "a",  class: "", id: "",href:'javascript()' },
+            { tag: "b-tooltip", txt: "显示采集数据", class: "", target: "" },
           ]
         }
       }),

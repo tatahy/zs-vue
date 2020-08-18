@@ -35,6 +35,10 @@ const headerCom = (opt) => {
   };
 };
 
+ //query方式类似get方法，query中的所有内容都再url中，刷新页面也存在
+//params方式类似post方法，params中的所有内容不在url中，刷新页面就消失
+      
+
 export default {
   //顶层路由
   path: '/admin',
@@ -69,6 +73,14 @@ export default {
       components: {
         // title: headerCom({ txt: '"设备数据查询"' }),
         container: () => import('@/components/admin/equipment/module/DataTable.vue'),
+      }
+    },
+    {
+      path: 'equipment/chart',
+      name: 'equipment-chart',
+      components: {
+        // title: headerCom({ txt: '"设备数据查询"' }),
+        container: () => import('@/components/admin/equipment/Chart.vue'),
       }
     },
     {

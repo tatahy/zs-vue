@@ -21,15 +21,16 @@
           <td v-for="(name,n) in fields" v-bind:key="n">
             <!-- // val字段有渲染参数 -->
             <template v-if="fieldsProp.hasOwnProperty(name) ">
-              <TheTableCell
+              <!-- <TheTableCell
                 v-bind:opt="Object.assign(
                   {},
                   fieldsProp[name]['td'],
                   {
                     txt:itm[name],
-                    id:fieldsProp[name]['td'].hasOwnProperty('id')?{name:fieldsProp[name]['td']['id']['name'],val:itm[fieldsProp[name]['td']['id']['name']]}:null}
+                    id:fieldsProp[name]['td'].hasOwnProperty('id')?{name:fieldsProp[name]['td']['id']['name'],val:itm[fieldsProp[name]['td']['id']['name']]}:null},
                   )"
-              />
+              />-->
+              <TheTableCell v-bind:opt="setTdOpt(itm,name,fieldsProp[name]['td'])" />
             </template>
 
             <!-- // val字段无渲染参数 -->
@@ -50,56 +51,56 @@ export default {
   name: "TheTable",
   props: {
     tbClass: {
-      type: String
+      type: String,
       // default: ""
     },
     headBg: {
       type: String,
-      default: "thead-light"
+      default: "thead-light",
     },
     fields: {
       type: Array,
-      required: true
+      required: true,
     },
     fieldsProp: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
-      }
+      },
     },
     items: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {};
   },
   computed: {},
   methods: {
-    setStatusCls(str) {
-      const pref = "px-2 alert-";
-      const clsArr = [
-        { txt: "正常", value: pref + "success" },
-        { txt: "异常", value: pref + "danger" },
-        { txt: "离线", value: pref + "warning" }
-      ];
-      let cls = "";
+    setTdOpt(item, field, tdOpt) {
+      const idObj = Object.keys(tdOpt).includes("id")
+        ? { name: tdOpt.id.name, val: item[tdOpt.id.name] }
+        : null;
+      const routeObj = Object.keys(tdOpt).includes("route")
+        ? { name: tdOpt.route.name, query: { [idObj.name]: idObj.val } }
+        : null;
+      const tdOptDefault = {
+        txt: item[field],
+        id: idObj ,
+        route: routeObj 
+      };
 
-      for (let i = 0; i < clsArr.length; i++) {
-        if (str === clsArr[i].txt) {
-          cls = clsArr[i].value;
-          break;
-        }
-      }
-
-      return cls;
-    }
-    //根据th字段信息添加<a>标签
+      return Object.assign(
+        {},
+        tdOpt,
+        tdOptDefault,
+      );
+    },
   },
   components: {
     // BTooltip
-    TheTableCell: () => import("./TheTableCell.vue")
-  }
+    TheTableCell: () => import("./TheTableCell.vue"),
+  },
 };
 </script>
